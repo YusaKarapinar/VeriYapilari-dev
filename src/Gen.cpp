@@ -1,9 +1,5 @@
 #include "Gen.h"
 
-Gen::Gen(char d) {
-    // data üyeye değer atama
-    data = d;
-
-    // next işaretçisini null olarak başlatma
-    next = nullptr;
+Gen::Gen(char d) : data(d), GenNext(nullptr) {
+    // Constructor'da veri üyeleri doğrudan başlatılır
 }

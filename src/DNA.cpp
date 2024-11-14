@@ -15,6 +15,9 @@ void DNA::loadFromFile(const std::string& filename) {
                 kromozom->addGen(gen);
             }
         }
+       
+        
+
         
         // Yeni kromozomu DNA'ya ekle
         addKromozom(kromozom);
@@ -24,17 +27,16 @@ void DNA::loadFromFile(const std::string& filename) {
 }
 
 void DNA::addKromozom(Kromozom* yeniKromozom) {
-    if (head == nullptr) {
-        head = tail = yeniKromozom; // Liste boşsa, yeni kromozom başa ve sona eklenir
+    if (KromozomHead == nullptr) {
+        KromozomHead = KromozomTail = yeniKromozom; // Liste boşsa, yeni kromozom başa ve sona eklenir
     } else {
-        tail->nextKromozom = yeniKromozom; // Son kromozomun next işaretçisi yeni kromozomu gösterir
-        yeniKromozom->prevKromozom = tail; // Yeni kromozomun prev işaretçisi eski sonu gösterir
-        tail = yeniKromozom; // Yeni kromozom, yeni son kromozom olur
+        KromozomTail->nextKromozom = yeniKromozom; // Son kromozomun next işaretçisi yeni kromozomu gösterir
+        KromozomTail = yeniKromozom; // Yeni kromozom, yeni son kromozom olur
     }
 }
 
 void DNA::displayDNA() {
-    Kromozom* current = head;
+    Kromozom* current = KromozomHead;
     int index = 1;
     
     while (current != nullptr) {
@@ -45,6 +47,7 @@ void DNA::displayDNA() {
 }
 
 void DNA::caprazlama(int idx1,int idx2){
+    
     
     
     

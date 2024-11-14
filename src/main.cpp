@@ -1,10 +1,17 @@
 #include "DNA.h"
+#include <chrono>
 #include <iostream>
 
 int main() {
+    auto start = std::chrono::high_resolution_clock::now();
+
     DNA dna;
     dna.loadFromFile("Dna.txt"); // Dna.txt dosyasından DNA yükle
-    dna.displayDNA();            // Kromozomları ekrana yazdır
+    //dna.displayDNA();            // Kromozomları ekrana yazdır
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start); //süre hesabı
+
+    std::cout << duration.count() <<"ms----toplam"<<std::endl;
 
     int secim, idx1, idx2, genIndex;
     do {

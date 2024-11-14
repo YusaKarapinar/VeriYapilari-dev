@@ -1,24 +1,25 @@
 #include "Kromozom.h"
 #include <iostream>
 
-Kromozom::Kromozom() : head(nullptr) {}
+Kromozom::Kromozom() : GenHead(nullptr) {}
 
 void Kromozom::addGen(char data) {
     Gen* newGen = new Gen(data);
-    if (!head) {
-        head = newGen;
+    if (!GenHead) {
+        GenHead = newGen;
     } else {
-        Gen* temp = head;
-        while (temp->next) temp = temp->next;
-        temp->next = newGen;
+        Gen* temp = GenHead;
+        while (temp->GenNext) temp = temp->GenNext;
+        temp->GenNext = newGen;
     }
 }
 
+
 void Kromozom::printKromozom() {
-    Gen* temp = head;
+    Gen* temp = GenHead;
     while (temp) {
         std::cout << temp->data << " ";
-        temp = temp->next;
+        temp = temp->GenNext;
     }
     std::cout << std::endl;
 }

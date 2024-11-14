@@ -6,10 +6,10 @@
 
 class DNA {
 public:
-    Kromozom* head;   // DNA'daki ilk kromozom
-    Kromozom* tail;   // DNA'daki son kromozom
+    Kromozom* KromozomHead;   // DNA'daki ilk kromozom
+    Kromozom* KromozomTail;   // DNA'daki son kromozom
     
-    DNA() : head(nullptr), tail(nullptr) {} // Başlatıcı fonksiyon
+    DNA() : KromozomHead(nullptr), KromozomTail(nullptr) {} // Başlatıcı fonksiyon
 
     void loadFromFile(const std::string& filename);   // Dosyadan DNA yükleme
     void displayDNA();       // DNA'yı ekrana yazdırma
@@ -17,5 +17,6 @@ public:
     void mutasyon(int kromozomIndex, int genIndex); // Mutasyon işlemi
     void addKromozom(Kromozom* yeniKromozom); // Kromozom ekleme fonksiyonu
 };
+
 
 #endif
