@@ -4,7 +4,8 @@
 class Gen {
 public:
     char data;      // Gen karakteri
-    Gen* GenNext;      // Sonraki gene işaretçi
+    Gen* genNext;      // Sonraki gene işaretçi
+    Gen* genPrew;      // Sonraki gene işaretçi
 
     Gen(char d);    // Yapıcı fonksiyon
 };

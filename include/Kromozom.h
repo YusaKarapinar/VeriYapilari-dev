@@ -5,15 +5,15 @@
 
 class Kromozom {
 public:
-    Gen* GenHead;    // Kromozomun başındaki gene işaretçi
-    Gen* GenTail; 
+    Gen* genHead;     // Kromozomun başındaki gene işaretçi
+    Gen* genTail;     // Kromozomun başındaki gene işaretçi
     Kromozom* prevKromozom;
     Kromozom* nextKromozom;
 
     Kromozom();    // Yapıcı fonksiyon
-    void addGen(char data);   // Gen ekleme
+    ~Kromozom();  // Destructor eklendi
+    void addGen(char data) ;   // Gen ekleme
     void printKromozom();     // Kromozomun tüm genlerini yazdırma
-    
 };
 
 #endif
