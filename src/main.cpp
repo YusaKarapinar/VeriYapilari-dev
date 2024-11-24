@@ -12,44 +12,37 @@ int main()
 
     std::cout << duration.count() << "ms" << std::endl;
 
-    int secim, idx1, idx2, genIndex;
-    do
-    {
-        std::cout << "1- Çaprazlama\n2- Mutasyon\n3- Ekrana Yaz\n4- Çıkış\n";
+    int secim, idx1, idx2, genIndex,kromozomIndex;
+    do {
+        std::cout << "1- Çaprazlama\n2- Mutasyon\n3- Ekrana Yaz\n4- Otomatik İşlemler\n5- Çıkış\n";
         std::cout << "Seçiminiz: ";
         std::cin >> secim;
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Satır sonunu temizle
 
-        switch (secim)
-        {
+        switch (secim) {
         case 1:
+            
             std::cout << "Çaprazlamak için iki kromozom numarası girin: ";
             std::cin >> idx1 >> idx2;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             dna.caprazlama(idx1, idx2);
-            dna.saveToFile("Dna.txt"); // Değişiklikleri dosyaya kaydet
-            dna.saveToFile("Dna.txt"); // Değişiklikleri dosyaya kaydet
             break;
         case 2:
             std::cout << "Mutasyon için kromozom ve gen numarası girin: ";
-            std::cin >> idx1 >> genIndex;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            dna.mutasyon(idx1, genIndex);
-            dna.saveToFile("Dna.txt"); // Değişiklikleri dosyaya kaydet
-            
+            std::cin >> kromozomIndex >> genIndex;
+            dna.mutasyon(kromozomIndex, genIndex);
             break;
         case 3:
-            dna.displayDNA();
+            dna.printSmallestGenes();
             break;
         case 4:
-            dna.saveToFile("Dna.txt"); // Programdan çıkmadan önce kaydet
+            dna.automaticOperations("Islemler.txt");
+            break;
+        case 5:
             std::cout << "Çıkış yapılıyor...\n";
             break;
         default:
             std::cout << "Geçersiz seçim!\n";
             break;
         }
-    } while (secim != 4);
-
+    } while (secim != 5);
     return 0;
 }

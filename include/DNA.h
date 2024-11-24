@@ -17,7 +17,8 @@ public:
     void caprazlama(int idx1, int idx2); // Çaprazlama işlemi
     void mutasyon(int kromozomIndex, int genIndex); // Mutasyon işlemi
     void addKromozom(Kromozom* yeniKromozom); // Kromozom ekleme fonksiyonu
-    void saveToFile(const std::string& filename); // DNA'yı dosyaya yazdırma
+    void automaticOperations(const std::string &filename);
+    void printSmallestGenes();
 };
 
 #endif

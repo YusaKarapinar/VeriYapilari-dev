@@ -2,6 +2,8 @@
 #define KROMOZOM_H
 
 #include "Gen.h"
+#include <fstream>
+
 
 class Kromozom {
 public:
@@ -14,6 +16,7 @@ public:
     ~Kromozom();  // Destructor eklendi
     void addGen(char data) ;   // Gen ekleme
     void printKromozom();     // Kromozomun tüm genlerini yazdırma
+     void printToFile(std::ofstream& file);
 };
 
 #endif

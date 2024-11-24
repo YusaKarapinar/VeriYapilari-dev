@@ -31,3 +31,4 @@ void  Kromozom::printKromozom() {
     }
     std::cout << std::endl;
 }
+
