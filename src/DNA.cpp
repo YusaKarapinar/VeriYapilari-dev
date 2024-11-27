@@ -1,8 +1,16 @@
+/**
+* dna.cpp 
+* istenen tüm genel sistem kodlarının bulundugu dosya 
+* 2. öğretim A grubu
+* 1. ödev
+* 25.11.2024
+* Yuşa Karapınar yusa.karapinar@ogr.sakarya.edu.tr
+*/
 #include "DNA.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
-
+//destructor fonksiyonu
 DNA::~DNA()
 {
     Kromozom *current = kromozomHead;
@@ -14,6 +22,7 @@ DNA::~DNA()
     }
 }
 
+//dosyaya yazdırma fonksiyonu
 void Kromozom::printToFile(std::ofstream &file)
 {
     Gen *temp = genHead;
@@ -23,7 +32,7 @@ void Kromozom::printToFile(std::ofstream &file)
         temp = temp->genNext;
     }
 }
-
+//dosyadan okuma fonksiyonu
 void DNA::loadFromFile(const std::string &filename)
 {
     std::ifstream file(filename);
@@ -36,7 +45,7 @@ void DNA::loadFromFile(const std::string &filename)
         // gen ekleme kısmı
         for (char gen : line)
         {
-            if (gen != ' ')
+            if (gen != ' ' && gen !='\n')
             {
                 kromozom->addGen(gen);
             }
@@ -49,33 +58,37 @@ void DNA::loadFromFile(const std::string &filename)
     file.close();
 }
 
-void DNA::addKromozom(Kromozom *yeniKromozom)
+//dna ya kromozom ekleme fonksiyonu
+void DNA::addKromozom(Kromozom *newCromosom)
 {
     if (kromozomHead == nullptr)
     {
-        kromozomHead = kromozomTail = yeniKromozom; // liste boşsa ilk ve son kromozom olur
+        kromozomHead = kromozomTail = newCromosom; // liste boşsa ilk ve son kromozom olur
     }
     else
     {
-        kromozomTail->nextKromozom = yeniKromozom;
-        yeniKromozom->prevKromozom = kromozomTail;
-        kromozomTail = yeniKromozom; // son kromozom olur
+        kromozomTail->nextKromozom = newCromosom;
+        newCromosom->prevKromozom = kromozomTail;
+        kromozomTail = newCromosom; // son kromozom olur
     }
+    
 }
-
-void DNA::displayDNA()
-{
-    Kromozom *current = kromozomHead;
+//veri parsellememiz doğru mu diye tüm linked listlerde gezerek yazdırıyoruz
+void DNA::displayDNA() {
+    Kromozom* current = kromozomHead;
     int index = 0;
-
-    while (current != nullptr)
-    {
-        std::cout << "Kromozom " << index++ << ": ";
-        current->printKromozom();
+    while (current != nullptr) {
+        std::cout << " Kromozom " << index++ << ": ";
+        
+        current->printKromozom(); // kromozomdaki herşeyi yazdırıyor
         current = current->nextKromozom;
     }
 }
-void DNA::mutasyon(int kromozomIndex, int genIndex)
+
+
+
+
+void DNA::mutation(int kromozomIndex, int genIndex)
 {
     Kromozom *chrom = kromozomHead;
     int count = 0;
@@ -108,7 +121,7 @@ void DNA::mutasyon(int kromozomIndex, int genIndex)
         return;
     }
 
-    // mutasyonu yap
+    // mutationu yap
     gen->data = 'X';
 
     // dosyayı değiştir
@@ -142,7 +155,7 @@ void DNA::mutasyon(int kromozomIndex, int genIndex)
             while (lineStream >> genData)
             {
                 if (currentGen == genIndex)
-                    newLineStream << "X "; // mutasyon
+                    newLineStream << "X "; // mutation
                 else
                     newLineStream << genData << " ";
                 currentGen++;
@@ -163,12 +176,12 @@ void DNA::mutasyon(int kromozomIndex, int genIndex)
     std::remove("dna.txt");
     std::rename("temp.txt", "dna.txt");
 
-    std::cout << "Mutasyon tamamlandı ve dosyaya yansıtıldı!" << std::endl;
+    std::cout << "mutation tamamlandı ve dosyaya yansıtıldı!" << std::endl;
 }
 
-void DNA::caprazlama(int idx1, int idx2)
+void DNA::crossover(int idx1, int idx2)
 {
-    // Locate chromosomes by their indices
+    // indexlerine göre kromozomları bul
     Kromozom *chrom1 = kromozomHead;
     Kromozom *chrom2 = kromozomHead;
     int count = 0;
@@ -192,7 +205,7 @@ void DNA::caprazlama(int idx1, int idx2)
         return;
     }
 
-    // Calculate gene counts
+    // genleri hesapla
     int size1 = 0, size2 = 0;
     Gen *temp = chrom1->genHead;
     while (temp)
@@ -208,28 +221,28 @@ void DNA::caprazlama(int idx1, int idx2)
         temp = temp->genNext;
     }
 
-    // Determine midpoints
+    // orta noktaları bul
     int mid1 = size1 / 2;
     int mid2 = size2 / 2;
 
-    // Create new chromosomes
+    // yeni kromozom nesnelerini yap
     Kromozom *newChrom1 = new Kromozom();
     Kromozom *newChrom2 = new Kromozom();
 
-    // Build newChrom1: chrom1 left + chrom2 right
+    // kromozom=kromozom1 sol + kromozom 2 sağ 
     temp = chrom1->genHead;
     int index = 0;
     while (temp && index < mid1)
     {
-        newChrom1->addGen(temp->data); // Add left part of chrom1
+        newChrom1->addGen(temp->data); // sol tarafı ekle
         temp = temp->genNext;
         index++;
     }
 
     temp = chrom2->genHead;
     index = 0;
-   
 
+    //orta varsa çıkar
     while (index < mid2)
     {
         temp = temp->genNext;
@@ -242,17 +255,17 @@ void DNA::caprazlama(int idx1, int idx2)
 
     while (temp && index >= mid2)
     {
-        newChrom1->addGen(temp->data); // Add right part of chrom2
+        newChrom1->addGen(temp->data); // sağ tarafı ekle
         temp = temp->genNext;
         index++;
     }
 
-    // Build newChrom2: chrom2 left + chrom1 right
+    //  kromozom=kromozom2 sol + kromozom 1 sağ 
     temp = chrom2->genHead;
     index = 0;
     while (temp && index < mid2)
     {
-        newChrom2->addGen(temp->data); // Add left part of chrom2
+        newChrom2->addGen(temp->data); // sol taraf
         temp = temp->genNext;
         index++;
     }
@@ -271,16 +284,16 @@ void DNA::caprazlama(int idx1, int idx2)
 
     while (temp && index >= mid1)
     {
-        newChrom2->addGen(temp->data); // Add right part of chrom1
+        newChrom2->addGen(temp->data); // sağ taraf
         temp = temp->genNext;
         index++;
     }
 
-    // Add the new chromosomes to the DNA's population
+    // dna ya ekle
     addKromozom(newChrom1);
     addKromozom(newChrom2);
 
-    // Write the new chromosomes to the DNA file
+    // dosyaya ekle
     std::ofstream file("dna.txt", std::ios::app);
     if (file.is_open())
     {
@@ -319,13 +332,13 @@ void DNA::automaticOperations(const std::string &filename)
         if (operation == 'C')
         { // Çaprazlama
             iss >> idx1 >> idx2;
-            caprazlama(idx1, idx2);
+            crossover(idx1, idx2);
         }
         else if (operation == 'M')
-        { // Mutasyon
+        { // mutation
             int genIndex;
             iss >> idx1 >> genIndex;
-            mutasyon(idx1, genIndex);
+            mutation(idx1, genIndex);
         }
         else
         {
@@ -339,22 +352,33 @@ void DNA::automaticOperations(const std::string &filename)
 
 void DNA::printSmallestGenes()
 {
-    Kromozom *current = kromozomHead;
-    while (current)
+   
+    Kromozom *current = kromozomHead; 
+    if (!current) {
+        std::cerr << "No chromosomes available.\n";
+        return;
+    }
+
+    while (current) // tüm kromozomlardan dön
     {
         Gen *gen = current->genHead;
-        Gen *smallest = gen; // İlk geni varsayılan olarak al
-        while (gen)
-        {
-            if (gen->data < smallest->data)
-            {
-                smallest = gen; // Daha küçük bir gen bulundu
-            }
-            gen = gen->genNext;
+        if (!gen) { 
+            std::cerr << "Chromosome has no genes.\n";
+            current = current->nextKromozom; 
+            continue;
         }
-        // Eğer küçük gen bulunamadıysa ilk geni yazdır
-        std::cout << (smallest ? smallest->data : current->genHead->data) << " ";
-        current = current->nextKromozom;
+
+        Gen *smallest = gen; // ilkini en küçük varsayıyoruz
+        while (gen) { 
+            if (gen->data < smallest->data) {
+                smallest = gen; // daha kücük bulunursa en kücük o
+            }
+            gen = gen->genNext; 
+        }
+
+       
+        std::cout << smallest->data << " "<<std::endl;
+        current = current->nextKromozom; // yeni kromozoma geç
     }
-    std::cout << std::endl;
+    std::cout << std::endl; 
 }
